@@ -105,7 +105,7 @@
 				color: #fff;
 			}
 			
-			.type-yp{
+			.type-yc{
 				background-color: rgb(0, 170, 127);
 				width: 33%;
 				text-align: center;
@@ -185,7 +185,7 @@
 				width: 10%;
 			}
 			
-			.yp{
+			.yc{
 				text-align: center;
 			}
 			
@@ -217,7 +217,7 @@
 			<div class="type">
 				<div class="type-jg" @click=selectType(0)>结果</div>
 				<div class="type-zs" @click=selectType(1)>走势</div>
-				<div class="type-yp" @click=selectType(2)>预判</div>
+				<div class="type-yc" @click=selectType(2)>预测</div>
 			</div>
 			<div v-if="nowType==0" class="table">
 				<div class="table-tittle">
@@ -255,8 +255,8 @@
 					<div class="width10">{{item.baozi?"√":""}}</div>
 				</div>
 			</div>
-			<div class="yp" v-if="nowType==2">
-				暂无预判
+			<div class="yc" v-if="nowType==2">
+				暂无预测
 			</div>
 			<div class="support">
 				<div>技术支持: <a href="https://www.byprogram.xyz/"> @byprogram</a> </div>
@@ -276,14 +276,15 @@
 			  apiURL:'http://jndapi.byprogram.xyz/result?m=0&n=50'
 		  },
 		  created(){
-			  $.get(this.apiURL).then(res=>{
-				this.resultArray = res.data.list;
-				this.newestData = res.data.list[0];
+			  var that = this;
+			  $.get(that.apiURL).then(res=>{
+				that.resultArray = res.data.list;
+				that.newestData = res.data.list[0];
 			  })
 			  setInterval(function(){
-				  $.get(this.apiURL).then(res=>{
-					this.resultArray = res.data.list;
-					this.newestData = res.data.list[0];
+				  $.get(that.apiURL).then(res=>{
+					that.resultArray = res.data.list;
+					that.newestData = res.data.list[0];
 				  })
 			  },1000)
 			  
