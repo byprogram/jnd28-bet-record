@@ -13,9 +13,11 @@
 				justify-items: center;
 				justify-content: center;
 			}
+			
 			.app{
 				width: 700px;
 			}
+			
 			.newest-id{
 				text-align: center;
 				height: 50px;
@@ -25,7 +27,7 @@
 				display: flex;
 				justify-content: center;
 			}
-			
+
 			.newest-result{
 				text-align: center;
 				height: 40px;
@@ -36,6 +38,7 @@
 				justify-content: center;
 				padding: 20px 0;
 			}
+			
 			.newest-result-number{
 				background-color: rgb(19, 181, 177);
 				height: 40px;
@@ -80,12 +83,42 @@
 				margin: 5px 0;
 			}
 			
+			.type{
+				display: flex;
+				justify-content: space-around;
+				height: 30px;
+				line-height: 30px;
+				margin: 15px 0;
+			}
+			
+			.type-jg{
+				background-color: rgb(51, 83, 151);
+				width: 33%;
+				text-align: center;
+				color: #fff;
+			}
+			
+			.type-zs{
+				background-color: rgb(0, 199, 247);
+				width: 33%;
+				text-align: center;
+				color: #fff;
+			}
+			
+			.type-yp{
+				background-color: rgb(0, 170, 127);
+				width: 33%;
+				text-align: center;
+				color: #fff;
+			}
+			
 			.table{
 				border-top: solid  #e2e2e2 1px;
 				border-bottom: solid  #e2e2e2 1px;
 				background-color: #fff;
 				font-size: 13px;
 			}
+			
 			.table-tittle{
 				display: flex;
 				justify-content: space-around;
@@ -93,11 +126,14 @@
 				line-height: 30px;
 				border-left: solid  #e2e2e2 1px;
 				border-right: solid  #e2e2e2 1px;
+				background-color: #f8f8f8;
 			}
+			
 			.table-tittle div{
 				width: 33%;
 				text-align: center;
 			}
+			
 			.table-line{
 				display: flex;
 				justify-content: space-around;
@@ -107,13 +143,50 @@
 				border-left: solid  #e2e2e2 1px;
 				border-right: solid  #e2e2e2 1px;
 			}
+			
 			.table-line div{
 				width: 33%;
 				text-align: center;
 			}
+			
 			.table-line-center{
 				border-left: solid  #e2e2e2 1px;
 				border-right: solid  #e2e2e2 1px;
+			}
+			
+			.zs{
+				background-color: #fff;
+				font-size: 10px;
+			}
+			
+			.zs-title{
+				display: flex;
+				justify-content: space-around;
+				height: 30px;
+				line-height: 30px;
+				border-left: solid  #e2e2e2 1px;
+				border-right: solid  #e2e2e2 1px;
+				background-color: #f8f8f8;
+				width: 100%;
+				text-align: center;
+			}
+			
+			.zs-content{
+				display: flex;
+				justify-content: space-around;
+				height: 30px;
+				line-height: 30px;
+				border-left: solid  #e2e2e2 1px;
+				border-right: solid  #e2e2e2 1px;
+				text-align: center;
+			}
+			
+			.width10{
+				width: 10%;
+			}
+			
+			.yp{
+				text-align: center;
 			}
 			
 			.support{
@@ -123,6 +196,7 @@
 				color: #939393;
 				font-size: 13px;
 			}
+			
 			a{
 				color: #939393;
 			}
@@ -140,17 +214,49 @@
 				<div class="newest-result-ds" v-if="newestData.odd">单</div>
 				<div class="newest-result-ds" v-if="newestData.even">双</div>
 			</div>
-			<div class="table">
+			<div class="type">
+				<div class="type-jg" @click=selectType(0)>结果</div>
+				<div class="type-zs" @click=selectType(1)>走势</div>
+				<div class="type-yp" @click=selectType(2)>预判</div>
+			</div>
+			<div v-if="nowType==0" class="table">
 				<div class="table-tittle">
 					<div>期号</div>
 					<div class="table-line-center">时间</div>
-					<div>结果</div>
+					<div>号码</div>
 				</div>
 				<div class="table-line" v-for="(item,index) in resultArray">
 					<div>{{item.id}}</div>
 					<div class="table-line-center">{{item.result_time.split(" ")[1]}}</div>
 					<div>{{item.one}} + {{item.two}} + {{item.three}} = {{(item.one+item.two+item.three<10?"0"+(item.one+item.two+item.three):(item.one+item.two+item.three))}}</div>
 				</div>
+			</div>
+			<div v-if="nowType==1" class="zs">
+				<div class="zs-title">
+					<div class="width10">期号</div>
+					<div class="width10">和</div>
+					<div class="width10">大</div>
+					<div class="width10">小</div>
+					<div class="width10">单</div>
+					<div class="width10">双</div>
+					<div class="width10">对子</div>
+					<div class="width10">顺子</div>
+					<div class="width10">豹子</div>
+				</div>
+				<div class="zs-content" v-for="(item,index) in resultArray">
+					<div class="width10">{{item.id}}</div>
+					<div class="width10">{{item.one+item.two+item.three}}</div>
+					<div class="width10">{{item.big?"√":""}}</div>
+					<div class="width10">{{item.small?"√":""}}</div>
+					<div class="width10">{{item.odd?"√":""}}</div>
+					<div class="width10">{{item.even?"√":""}}</div>
+					<div class="width10">{{item.duizi?"√":""}}</div>
+					<div class="width10">{{item.shunzi?"√":""}}</div>
+					<div class="width10">{{item.baozi?"√":""}}</div>
+				</div>
+			</div>
+			<div class="yp" v-if="nowType==2">
+				暂无预判
 			</div>
 			<div class="support">
 				<div>技术支持: <a href="https://www.byprogram.xyz/"> @byprogram</a> </div>
@@ -166,21 +272,27 @@
 		  data: {
 			  resultArray:[],
 			  newestData:{},
+			  nowType:0,
 			  apiURL:'http://jndapi.byprogram.xyz/result?m=0&n=50'
 		  },
 		  created(){
 			  $.get(this.apiURL).then(res=>{
-				this.resultArray = res.data.list
-				this.newestData = res.data.list[0]
+				this.resultArray = res.data.list;
+				this.newestData = res.data.list[0];
 			  })
 			  setInterval(function(){
 				  $.get(this.apiURL).then(res=>{
-					this.resultArray = res.data.list
-					this.newestData = res.data.list[0]
+					this.resultArray = res.data.list;
+					this.newestData = res.data.list[0];
 				  })
 			  },1000)
 			  
-		  }
+		  },
+		  methods: {
+		  	selectType(index) {
+		  		this.nowType = index;
+		  	}
+		  },
 		})
 	</script>
 </html>
