@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0">
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+		<script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+		<title>加拿大28开奖</title>
+		<style>
+			body{
+				background-color: #ececec;
+				display: flex;
+				justify-items: center;
+				justify-content: center;
+			}
+			.app{
+				width: 700px;
+			}
+			.newest-id{
+				text-align: center;
+				height: 50px;
+				line-height: 50px;
+				background-color: #fff;
+				margin: 10px 0;
+				display: flex;
+				justify-content: center;
+			}
+			
+			.newest-result{
+				text-align: center;
+				height: 40px;
+				line-height: 40px;
+				background-color: #fff;
+				margin: 10px 0;
+				display: flex;
+				justify-content: center;
+				padding: 20px 0;
+			}
+			.newest-result-number{
+				background-color: rgb(19, 181, 177);
+				height: 40px;
+				width: 40px;
+				text-align: center;
+				border-radius: 6px;
+				margin: 0 5px;
+				color: #fff;
+			}
+			
+			.newest-result-count{
+				background-color: #e50c07;
+				height: 40px;
+				width: 40px;
+				text-align: center;
+				border-radius: 6px;
+				margin: 0 5px;
+				color: #fff;
+			}
+			
+			.newest-result-dx{
+				background-color: #ff2b30;
+				height: 30px;
+				width: 30px;
+				line-height: 30px;
+				text-align: center;
+				border-radius: 50%;
+				margin: 0 5px;
+				color: #fff;
+				margin: 5px 10px;
+			}
+			
+			.newest-result-ds{
+				background-color: #2265fa;
+				height: 30px;
+				width: 30px;
+				line-height: 30px;
+				text-align: center;
+				border-radius: 50%;
+				margin: 0 5px;
+				color: #fff;
+				margin: 5px 0;
+			}
+			
+			.table{
+				border-top: solid  #e2e2e2 1px;
+				border-bottom: solid  #e2e2e2 1px;
+				background-color: #fff;
+				font-size: 10px;
+			}
+			.table-tittle{
+				display: flex;
+				justify-content: space-around;
+				height: 30px;
+				line-height: 30px;
+				border-left: solid  #e2e2e2 1px;
+				border-right: solid  #e2e2e2 1px;
+			}
+			.table-tittle div{
+				width: 33%;
+				text-align: center;
+			}
+			.table-line{
+				display: flex;
+				justify-content: space-around;
+				height: 30px;
+				line-height: 30px;
+				border-top: solid  #e2e2e2 1px;
+				border-left: solid  #e2e2e2 1px;
+				border-right: solid  #e2e2e2 1px;
+			}
+			.table-line div{
+				width: 33%;
+				text-align: center;
+			}
+			.table-line-center{
+				border-left: solid  #e2e2e2 1px;
+				border-right: solid  #e2e2e2 1px;
+			}
+			
+			.support{
+				text-align: center;
+				width: 80%;
+				padding: 20px 10%;
+				color: #939393;
+				font-size: 10px;
+			}
+			a{
+				color: #939393;
+			}
+		</style>
+		<div class="app" id="app">
+			<div class="newest-id">加拿大28开奖</div>
+			<div class="newest-id">最新：<span style="red">{{newestData.id}}</span>期</div>
+			<div class="newest-result">
+				<div class="newest-result-number">{{newestData.one}}</div>+
+				<div class="newest-result-number">{{newestData.two}}</div>+
+				<div class="newest-result-number">{{newestData.three}}</div>=
+				<div class="newest-result-count">{{newestData.one+newestData.two+newestData.three}}</div>
+				<div class="newest-result-dx" v-if="newestData.big">大</div>
+				<div class="newest-result-dx" v-if="newestData.small">小</div>
+				<div class="newest-result-ds" v-if="newestData.odd">单</div>
+				<div class="newest-result-ds" v-if="newestData.even">双</div>
+			</div>
+			<div class="table">
+				<div class="table-tittle">
+					<div>期号</div>
+					<div class="table-line-center">时间</div>
+					<div>结果</div>
+				</div>
+				<div class="table-line" v-for="(item,index) in resultArray">
+					<div>{{item.id}}</div>
+					<div class="table-line-center">{{item.result_time.split(" ")[1]}}</div>
+					<div>{{item.one}} + {{item.two}} + {{item.three}} = {{(item.one+item.two+item.three<10?"0"+(item.one+item.two+item.three):(item.one+item.two+item.three))}}</div>
+				</div>
+			</div>
+			<div class="support">
+				<div>技术支持: <a href="https://www.byprogram.xyz/"> @byprogram</a> </div>
+				<div>免责声明：本网站所有数据仅供参考，访问表明您同意改条款。本站不承担您的任何损失及法律责任！</div>
+			</div>
+		</div>
+	</head>
+	<body>
+	</body>
+	<script>
+		new Vue({
+		  el: '#app',
+		  data: {
+			  resultArray:[],
+			  newestData:{}
+		  },
+		  created(){
+			  $.get('http://jndapi.byprogram.xyz/result?m=0&n=50').then(res=>{
+				this.resultArray = res.data.list
+				this.newestData = res.data.list[0]
+			  })
+			  setInterval(function(){
+				  $.get('http://jndapi.byprogram.xyz/result?m=0&n=50').then(res=>{
+					this.resultArray = res.data.list
+					this.newestData = res.data.list[0]
+				  })
+			  },1000)
+			  
+		  }
+		})
+	</script>
+</html>
